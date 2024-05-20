@@ -190,7 +190,12 @@ export default {
                     this.enviarCorreo();
                 })
                 .catch(error => {
-                    console.error("Error al guardar vehículo:", error);
+                    if (error.response && error.response.data.errors) {
+                        this.errors = error.response.data.errors;
+                    } else {
+                        console.error("Error storing form:", error);
+                        this.$noty.error("Se produjo un error al procesar la solicitud.");
+                    }
                 });
         },
         // Método para enviar correo electrónico

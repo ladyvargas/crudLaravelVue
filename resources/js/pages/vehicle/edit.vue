@@ -182,9 +182,13 @@ export default {
                         });
                     }
                 })
-                .catch(erorr => {
-                    // console.log(erorr.response.data.errors);
-                    this.erorr = erorr.response.data.errors;
+                .catch(error => {
+                    if (error.response && error.response.data.errors) {
+                        this.errors = error.response.data.errors;
+                    } else {
+                        console.error("Error storing form:", error);
+                        this.$noty.error("El patente ya existe.");
+                    }
                 });
         }
     },

@@ -17,9 +17,14 @@
                                 id="basicInput"
                                 placeholder="Marca"
                                 v-model="form.brand"
-                                v-bind:class="{ 'is-invalid': errors && errors.brand }"
+                                v-bind:class="{
+                                    'is-invalid': errors && errors.brand
+                                }"
                             />
-                            <div v-if="errors && errors.brand" class="invalid-feedback">
+                            <div
+                                v-if="errors && errors.brand"
+                                class="invalid-feedback"
+                            >
                                 {{ errors.brand[0] }}
                             </div>
                         </div>
@@ -32,9 +37,14 @@
                                 id="helpInputTop"
                                 placeholder="Modelo"
                                 v-model="form.model"
-                                v-bind:class="{ 'is-invalid': errors && errors.model }"
+                                v-bind:class="{
+                                    'is-invalid': errors && errors.model
+                                }"
                             />
-                            <div v-if="errors && errors.model" class="invalid-feedback">
+                            <div
+                                v-if="errors && errors.model"
+                                class="invalid-feedback"
+                            >
                                 {{ errors.model[0] }}
                             </div>
                         </div>
@@ -47,9 +57,14 @@
                                 id="helpInputTop"
                                 placeholder="Patente"
                                 v-model="form.license_plate"
-                                v-bind:class="{ 'is-invalid': errors && errors.license_plate }"
+                                v-bind:class="{
+                                    'is-invalid': errors && errors.license_plate
+                                }"
                             />
-                            <div v-if="errors && errors.license_plate" class="invalid-feedback">
+                            <div
+                                v-if="errors && errors.license_plate"
+                                class="invalid-feedback"
+                            >
                                 {{ errors.license_plate[0] }}
                             </div>
                         </div>
@@ -62,9 +77,14 @@
                                 id="helpInputTop"
                                 placeholder="Año"
                                 v-model="form.year"
-                                v-bind:class="{ 'is-invalid': errors && errors.year }"
+                                v-bind:class="{
+                                    'is-invalid': errors && errors.year
+                                }"
                             />
-                            <div v-if="errors && errors.year" class="invalid-feedback">
+                            <div
+                                v-if="errors && errors.year"
+                                class="invalid-feedback"
+                            >
                                 {{ errors.year[0] }}
                             </div>
                         </div>
@@ -77,9 +97,14 @@
                                 id="helpInputTop"
                                 placeholder="Precio"
                                 v-model="form.price"
-                                v-bind:class="{ 'is-invalid': errors && errors.price }"
+                                v-bind:class="{
+                                    'is-invalid': errors && errors.price
+                                }"
                             />
-                            <div v-if="errors && errors.price" class="invalid-feedback">
+                            <div
+                                v-if="errors && errors.price"
+                                class="invalid-feedback"
+                            >
                                 {{ errors.price[0] }}
                             </div>
                         </div>
@@ -109,8 +134,12 @@
                             </div>
                         </div>
 
-                        <router-link to="/vehicle" class="btn btn-danger">Regresar</router-link>
-                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <router-link to="/vehicle" class="btn btn-danger"
+                            >Regresar</router-link
+                        >
+                        <button type="submit" class="btn btn-success">
+                            Guardar
+                        </button>
                     </form>
                 </div>
             </div>
@@ -142,6 +171,7 @@ export default {
                         this.errors = error.response.data.errors;
                     } else {
                         console.error("Error storing form:", error);
+                        this.$noty.error("El patente ya existe.");
                     }
                 });
         },

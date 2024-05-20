@@ -25,7 +25,8 @@ class VehicleRequest extends FormRequest
     {
         return [
             'brand' => 'required',
-            'id_user' => 'required'
+            'id_user' => 'required',
+            'license_plate' => 'required|unique:vehicles,license_plate'
         ];
     }
 }
