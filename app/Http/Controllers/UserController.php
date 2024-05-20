@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Hamcrest\Type\IsNumeric;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::orderby('id','ASC')->get();
+        $user = User::orderby('id', 'ASC')->get();
         return response()->json($user);
     }
 
@@ -42,17 +43,17 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-    $request->validated();
-    $user = User::create($request->all());
+        $request->validated();
+        $user = User::create($request->all());
 
-    // Obtener el ID del usuario creado
-    $userId = $user->id;
+        // Obtener el ID del usuario creado
+        $userId = $user->id;
 
-    return response()->json([
-        'status' => true,
-        'messege' => 'Ingresado Correctamente!!',
-        'userId' => $userId
-    ]);
+        return response()->json([
+            'status' => true,
+            'messege' => 'Ingresado Correctamente!!',
+            'userId' => $userId
+        ]);
     }
 
     /**
@@ -63,7 +64,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::where('email', $id)->first();
+        return response()->json($user);
     }
 
     /**
@@ -73,10 +75,14 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        
-        $user = User::where('id',$id)->first();
-        return response()->json($user);
+    { 
+        if (is_numeric($id)){
+            $user = User::where('id', $id)->first();
+            return response()->json($user);
+        } else {
+            $user = User::where('email', $id)->first();
+            return response()->json($user);
+        }
     }
 
     /**

@@ -140,43 +140,58 @@ export default {
                         last_name: row[1],
                         email: row[2]
                     };
+                    // Verificar si el usuario ya existe por su correo electrónico
                     axios
-                        .post("/api/users", newUser)
-                        .then(response => {
-                            console.log("Usuario guardado:", response.data);
-                            const userId = response.data.userId; // Obtener el ID del usuario creado
-                            this.GetData();
-                            // Guardar vehículos asociados al usuario
-                            const newVehicle = {
-                                brand: row[3],
-                                model: row[4],
-                                license_plate: row[5],
-                                year: row[6],
-                                price: row[7],
-                                id_user: userId // Asignar el ID del usuario al campo id_user del vehículo
-                            };
-                            axios
-                                .post("/api/vehicles", newVehicle)
-                                .then(response => {
-                                    console.log(
-                                        "Vehículo guardado:",
-                                        response.data
-                                    );
-                                    // Envío de correo electrónico después de guardar correctamente el usuario y el vehículo
-                                    this.enviarCorreo();
-                                })
-                                .catch(error => {
-                                    console.error(
-                                        "Error al guardar vehículo:",
-                                        error
-                                    );
-                                });
+                        .get(`/api/users/${newUser.email}/edit`)
+                        .then(existingUser => {
+                            if (existingUser) {
+                                // Si el usuario ya existe, asignar el ID existente al vehículo
+                                this.saveVehicle(existingUser.data.id, row);
+                            } else {
+                                // Si el usuario no existe, crear uno nuevo
+                                axios
+                                    .post("/api/users", newUser)
+                                    .then(response => {
+                                        console.log(
+                                            "Usuario guardado:",
+                                            response.data
+                                        );
+                                        const userId = response.data.userId; // Obtener el ID del usuario creado
+                                        this.saveVehicle(userId, row);
+                                    })
+                                    .catch(error => {
+                                        console.error(
+                                            "Error al guardar usuario:",
+                                            error
+                                        );
+                                    });
+                            }
                         })
                         .catch(error => {
-                            console.error("Error al guardar usuario:", error);
+                            console.error("Error al verificar usuario:", error);
                         });
                 });
             });
+        },
+        saveVehicle(userId, row) {
+            const newVehicle = {
+                brand: row[3],
+                model: row[4],
+                license_plate: row[5],
+                year: row[6],
+                price: row[7],
+                id_user: userId // Asignar el ID del usuario al campo id_user del vehículo
+            };
+            axios
+                .post("/api/vehicles", newVehicle)
+                .then(response => {
+                    console.log("Vehículo guardado:", response.data);
+                    // Envío de correo electrónico después de guardar correctamente el vehículo
+                    this.enviarCorreo();
+                })
+                .catch(error => {
+                    console.error("Error al guardar vehículo:", error);
+                });
         },
         // Método para enviar correo electrónico
         enviarCorreo() {
