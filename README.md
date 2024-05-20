@@ -7,6 +7,10 @@
 - Table
 <img src='/images/tabla.png' border='0' alt='Table'/>
 
+# PHPUnit
+
+php vendor/phpunit/phpunit/phpunit C:\laragon\www\crudLaravelVue\tests\Unit\UsersApiTest.php
+
 # Getting started
 
 ## Installation
